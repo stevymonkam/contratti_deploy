@@ -1,0 +1,292 @@
+
+<img src="../assets/images/logo.png" class="img-responsive" alt="Cinque Terre" width="200" height="100" >
+<div class="container-fluid" style="position: relative;top:70px;font-size:20px;">
+   <!--div class="row" *ngIf="false">
+      <div class="col-sm-3" style="background-color: #3396ec;"></div>
+      <div class="col-sm-6 text-center" style="font-size: 40px;     background-color: #3396ec;padding: 30px; color:white;">
+         app contrati 2.0
+      </div>
+      <div class="col-sm-3" style="background-color: #3396ec;"></div>
+   </div!-->
+   <div class="col-sm-12" style="background-color: #ec8c33;">  <!--au cas ou sa ne marche pas sur tout les ecran j essai avc celui du haut-->
+
+    <div class="d-flex align-content-around flex-wrap justify-content-center"style="font-size: 40px;background-color: #3396ec;padding: 30px; color:white;text-align:center;margin: 0px -30px 0px -30px">    contratti 2.0 </div>
+   </div>
+   <!-- form -->
+   <!--form  #f ="ngForm" (ngSubmit)="login(f.value)" style="background-color:rgb(32, 19, 221);padding: 20px;" *ngIf="false">
+   <div class="row text-center" style="background-color: rgb(224, 169, 18);padding: 20px;margin: -20px -19px 0px -19px">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6 text-center" style="font-size: 30px;">login</div>
+      <div class="col-sm-3"></div>
+   </div>
+   <div class="form-group row " style="position: relative;top:20px">
+      <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+      <div class="col-sm-10 col-md-10">
+         <input required email  type="email" ngModel #email="ngModel" name="email"  class="form-control" id="email" placeholder="Email">
+      </div>
+   </div>
+   <div class="form-group row " style="position: relative;top:20px">
+      <label for="inputPassword3" class="col-sm-2 col-md-2 col-form-label">Password</label>
+      <div class="col-sm-10 col-md-10">
+         <input required password type="password" ngModel #password="ngModel"  name="password" class="form-control" id="password" placeholder="Password">
+      </div>
+   </div>
+   <div class="form-group row">
+      <div class="col-sm-10 col-md-10">
+         <button type="submit" class="btn btn-primary text-center " >Sign in</button>
+      </div>
+   </div>
+   </form !-->
+   <!-- form -->
+   <br>
+   <br>
+     <!--debut form Login-->
+   <div  style="text-align: center;"*ngIf="isAnnulla">
+      <main class="login-form" >
+         <div class="cotainer">
+            <div class="row justify-content-center">
+              <div class="col-md-3 "></div>
+               <div class="col-md-6 ">
+                  <div class="card" >
+                     <div class="card-header" style="text-align: center;padding: 3%;background-color: rgb(210, 126, 30);">Login</div>
+                     <div class="card-body" style="background-color: #579ddb;">
+
+
+                        <form  [formGroup]="fa">
+
+                           <div class="form-group row" >
+                              <label for="email_address" class="col-md-4 col-form-label text-md-right">EMail </label>
+                              <div class="col-md-6">
+                                 <input required email  type="username"   name="username"  formControlName="username" class="form-control" id="username" placeholder="username" >
+
+
+
+                              </div>
+
+                           </div>
+                           <div class="form-group row">
+                              <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
+                              <div class="col-md-6">
+                                <input required password type="password" formControlName="password"    name="password" class="form-control" id="password" placeholder="Password">
+                              </div>
+
+
+                           </div>
+                           <div class="form-group row">
+                            <div class="col-md-4 col-sm-4 col-xs-4"></div>
+
+                              <div class="col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+
+                                 <button (click)="login()" [disabled]="loading" [ngStyle]="{'cursor': (loading?'not-allowed':'pointer')}" id="myBtn4" ng-click="myFunction4()" style="font-size:20px; width: -webkit-fill-available;  padding: 12px;border: 1px solid green;border: 1px solid white;background-color: #3396ec;border-bottom-color: white;">
+                                    Accedi
+                                    <i class="fa fa-spin fa-spinner" *ngIf="loading"></i>
+                                 </button>
+
+                              </div>
+                              <div class="col-md-4 col-sm-4 col-xs-4"></div>
+                           </div>
+                           <div class="form-group row">
+                              <div class="col-md-6 col-sm-6 col-xs-6"></div>
+                              <div class="col-md-6 col-sm-6 col-xs-6">
+                                 <a (click) = "cambio()" class="btn btn-link" style="color: black;">
+                                 Cambio Password?
+                                 </a>
+                              </div>
+                           </div>
+                        </form>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-3" *ngIf="colone_stabilise_error"></div>  <!--la colone si sert a remplacer la colone de l errere car kan je met la colone de l erreur a false pour stabiliser le form de login je la met a true!-->
+               <div class=" col-md-3 " style="position: relative; top: 70px;" *ngIf="credenziale_non_valid">
+                <div class="col-md-12 col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading text-center" style="background-color: #579ddb;">Errore</div>
+                        <div style="background-color: white;" class="panel-body">
+                            <form class="text-center border border-light">
+                                <p class="">Credenziale non valide</p>
+                                <button class="btn btn-primary" (click) = "okLogin()" style="background-color: #579ddb;">Ok</button>
+                            </form>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+         </div>
+      </main>
+   </div>
+   <!-- fin form Login-->
+
+    <!-- debut form changer password-->
+
+    <!--div  style="text-align: center;" *ngIf="isCambio">
+      <main class="login-form" >
+         <div class="cotainer">
+            <div class="row justify-content-center">
+              <div class="col-md-3 "></div>
+               <div class="col-md-6 ">
+                  <div class="card" >
+                     <div class="card-header" style="text-align: center;padding: 3%;background-color: rgb(210, 126, 30);">Cambio password</div>
+                     <div class="card-body" style="background-color: #579ddb;">
+
+
+                        <form  [formGroup]="fa1">
+
+                           <div class="form-group row" >
+                              <label for="email_address" class="col-md-4 col-form-label text-md-right">Nouva password </label>
+                              <div class="col-md-6">
+                                <input required password type="password" formControlName="password1"    name="password1" class="form-control" id="password" placeholder="Password">
+
+
+                              </div>
+                           </div>
+                           <div class="form-group row">
+                              <label for="password" class="col-md-4 col-form-label text-md-right">Ripeti Password</label>
+                              <div class="col-md-6">
+                                <input required password type="password" formControlName="password2"    name="password2" class="form-control" id="password" placeholder="Password">
+                              </div>
+                           </div>
+                           <div class="form-group row">
+                            <div class="col-md-2 col-sm-2 col-xs-3"></div>
+
+                              <div class="col-md-4 col-sm-4 col-xs-3" style="text-align: center;">
+
+                                <button (click) = "conferma()" id="myBtn4" ng-click="myFunction4()" style="font-size:20px; width: -webkit-fill-available;  padding: 12px;border: 1px solid green;border: 1px solid white;background-color: #3396ec;border-bottom-color: white;">Conferma</button>
+
+                              </div>
+                              <div class="col-md-4 col-sm-4 col-xs-3" style="text-align: center;">
+
+                                <button (click) = "annulla()" type="button" id="myBtn4" ng-click="myFunction4()" style="font-size:20px; width: -webkit-fill-available;  padding: 12px;border: 1px solid green;border: 1px solid white;background-color: #3396ec;border-bottom-color: white;">Annula</button>
+
+                              </div>
+                              <div class="col-md-2 col-sm-2 col-xs-3"></div>
+
+                           </div>
+                           <div class="form-group row">
+                              <div class="col-md-6 col-sm-6 col-xs-6"></div>
+                              <div class="col-md-6 col-sm-6 col-xs-6">
+                                 <a  class="btn btn-link" style="color: black;">
+                                 </a>
+                              </div>
+                           </div>
+                        </form>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-3" *ngIf="colone_stabilise_error"></div>  <!--la colone si sert a remplacer la colone de l errere car kan je met la colone de l erreur a false pour stabiliser le form de login je la met a true!-->
+              <!--div class=" col-md-3 " style="position: relative; top: 70px;" *ngIf="true">
+                <div class="col-md-12 col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading text-center" style="background-color: #579ddb;">Attenzione</div>
+                        <div style="background-color: white;" class="panel-body">
+                            <form class="text-center border border-light">
+                                <p class="" *ngIf="flag_aggior">Password aggiornata</p>
+                                <p class="" *ngIf="flag_non_aggior"> Errore inateso Password non aggiornata</p>
+                                <button class="btn btn-primary" (click) = "okChanpasswor()" style="background-color: #579ddb;">Ok</button>
+                            </form>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+         </div>
+      </main>
+   </div!-->
+
+   <div  style="text-align: center;"*ngIf="isCambio">
+    <main class="login-form" >
+       <div class="cotainer">
+          <div class="row justify-content-center">
+            <div class="col-md-3 "></div>
+             <div class="col-md-6 ">
+                <div class="card" >
+                   <div class="card-header" style="text-align: center;padding: 3%;background-color: rgb(210, 126, 30);">Cambio password</div>
+                   <div class="card-body" style="background-color: #579ddb;">
+
+
+                    <form  [formGroup]="fa1">
+
+                      <div class="form-group row" >
+                         <label for="email_address" class="col-md-4 col-form-label text-md-right">Nouva password </label>
+                         <div class="col-md-6">
+                           <input required password type="password" formControlName="password"    name="password1" class="form-control" id="password" placeholder="Password">
+
+
+                         </div>
+                      </div>
+                      <div class="form-group row">
+                         <label for="password" class="col-md-4 col-form-label text-md-right">Ripeti Password</label>
+                         <div class="col-md-6">
+                           <input required password_confirmation type="password_confirmation" formControlName="password_confirmation"    name="password2" class="form-control" id="password" placeholder="password_confirmation">
+                         </div>
+                      </div>
+                      <div class="form-group row">
+                       <div class="col-md-2 col-sm-2 col-xs-3"></div>
+
+                         <div class="col-md-4 col-sm-4 col-xs-3" style="text-align: center;">
+
+                           <button (click) = "conferma()" id="myBtn4" ng-click="myFunction4()" style="font-size:20px; width: -webkit-fill-available;  padding: 12px;border: 1px solid green;border: 1px solid white;background-color: #3396ec;border-bottom-color: white;">Conferma</button>
+
+                         </div>
+                         <div class="col-md-4 col-sm-4 col-xs-3" style="text-align: center;">
+
+                           <button (click) = "annulla()" type="button" id="myBtn4" ng-click="myFunction4()" style="font-size:20px; width: -webkit-fill-available;  padding: 12px;border: 1px solid green;border: 1px solid white;background-color: #3396ec;border-bottom-color: white;">Annula</button>
+
+                         </div>
+                         <div class="col-md-2 col-sm-2 col-xs-3"></div>
+
+                      </div>
+                      <div class="form-group row">
+                         <div class="col-md-6 col-sm-6 col-xs-6"></div>
+                         <div class="col-md-6 col-sm-6 col-xs-6">
+                            <a  class="btn btn-link" style="color: black;">
+                            </a>
+                         </div>
+                      </div>
+                   </form>
+                </div>
+             </div>
+          </div>
+          <div class="col-md-3" *ngIf="colone_stabilise_error"></div>  <!--la colone si sert a remplacer la colone de l errere car kan je met la colone de l erreur a false pour stabiliser le form de login je la met a true!-->
+         <div class=" col-md-3 " style="position: relative; top: 70px;" *ngIf="credenziale_non_valid">
+           <div class="col-md-12 col-sm-12">
+               <div class="panel panel-default">
+                   <div class="panel-heading text-center" style="background-color: #579ddb;">Attenzione</div>
+                   <div style="background-color: white;" class="panel-body">
+                       <form class="text-center border border-light">
+                           <p class="" *ngIf="flag_aggior">Password aggiornata</p>
+                           <p class="" *ngIf="flag_non_aggior"> Errore inateso Password non aggiornata</p>
+                           <button class="btn btn-primary" (click) = "okChanpasswor()" style="background-color: #579ddb;">Ok</button>
+                       </form>
+
+
+
+                      </div>
+                  </div>
+              </div>
+          </div>
+          </div>
+       </div>
+    </main>
+ </div>
+   <!-- Fin form changer password-->
+   <footer id="sticky-footer" class="py-3  text-white-10" style="position: relative;top:80px;">
+      <div class="container-fluid">
+         <div class="row">
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-6">
+            </div>
+            <div class="col-sm-5">
+            </div>
+         </div>
+      </div>
+      <img src="../assets/images/help.png" width="27" heigth="9" >
+   </footer>
+</div>

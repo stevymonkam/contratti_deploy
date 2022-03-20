@@ -1,0 +1,68 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+/* You can add global styles to this file, and also import other style files */
+.mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: #a6cf8b;
+    border-radius: 4px 4px 0 0;
+    padding: 0.75em 0.75em 0 0.75em;
+    margin-top: 12px;
+}
+.mat-form-field-appearance-legacy .mat-form-field-underline {
+    background-color: rgba(0,0,0,0);
+}
+
+.mat-form-field-flex {
+    display: inline-flex;
+    align-items: baseline;
+    box-sizing: border-box;
+    width: 100%;
+    color:black;
+    background-color: white;
+    margin-top: 12px;
+    height: 55px;
+}
+
+@media (min-width: 1200px){
+    .modal-xl {
+        max-width: 1500px;
+    }
+}
+
+@import '~bootstrap/dist/css/bootstrap.css';
+
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+
+/* BASIC */
+html {
+  background-color:#1a4368;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  height: 100vh;
+  background-color:#1a4368;
+
+}
+
+a {
+  color: #92badd;
+  display:inline-block;
+  text-decoration: none;
+  font-weight: 400;
+}
+
+h2 {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  display:inline-block;
+  margin: 40px 8px 10px 8px;
+  color: #cccccc;
+}
+
+.btn-lg, .btn-group-lg > .btn {
+  padding: 0.7rem 1rem;
+  font-size: 1.0rem; 
+  line-height: 1.5;
+  border-radius: 0.3rem;
+}

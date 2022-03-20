@@ -1,0 +1,170 @@
+<div class="sidebar-heading" style="background-color:#9dc4e7;height: 65px;">
+  <img style="max-height: 50px; max-width: 100px;" src="assets/images/logo.png">
+</div>
+
+<div class="sidebar-heading" style="background-color:#1f4e78; height: 85px;">
+  <div class="sidebar-heading" style="background-color:#1f4e78; height: 85px;">
+    <div class="nav-item dropdown" style="position: relative; margin-top:15px; display: inline;">
+      <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">File</a>
+      <div class="dropdown-menu">
+        <a href="#" (click) = "printing('ExampleTable')" class="dropdown-item">Stampa</a>
+        <a (click) ="exportexcel('ExampleTable')" class="dropdown-item">Exporta</a>
+        <a tappable (click) = "sendmail(editEmailModal)" class="dropdown-item">Invia</a>
+        <a href="#" (click) = "uscire()" class="dropdown-item">Esci</a>
+      </div>
+    </div>
+
+    <div class="nav-item dropdown" style="display: inline; margin-top:15px;">
+        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Impostazioni</a>
+        <div class="dropdown-menu">
+            <a href="#" class="dropdown-item">Utenze</a>
+            <a href="#" class="dropdown-item">Contratti</a>
+        </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #editEmailModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="editProfileLabel"></h5>
+    <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close" >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body" style="padding: 0rem;">
+    <div class="container-fluid">
+      <div class="row" >
+        <!-- left part of the mail modal -->
+        <div class="col-md-9">
+          <div class="col-md-12" style="background-color: #579ddb;" >
+            <div class="row">
+              <div class="col-md-4">
+                <div style="float: left;">
+                  <img style="height: 80px; width: 80px;" src="../assets/images/logo.png" alt="">
+                </div>
+              </div>
+              <div class="col-md-4 my-auto text-center">
+                <div> Contratii 2.0 </div>
+              </div>
+              <div class="col-md-4"> </div>
+            </div>
+          </div>
+
+          <div class="col-md-12 mt-3">
+            <div class="row" >
+              <div class="col-md-4">
+                <div class="row" style="margin-right: 7px; margin-left: 7px; background-color: #244e78; padding-top: 20px; padding-bottom: 20px;">
+                  <div class="col-md-12" style="color:white;">
+                    Invio di:
+                  </div>
+                  <div class="col-md-12 text-center " style="color:#e8ef85;">
+                    <p> CONTRATTO</p>
+                    <p> XXXYYYKKK</p>
+                  </div>
+                  <div class="col-md-12" style="color:white;">
+                    <p>Documenti</p>
+                    <ul>
+                      <li>contratto</li>
+                      <li>Allegato</li>
+                      <li>Rinnovo</li>
+                      <li>Disdetta</li>
+                    </ul>
+                  </div>
+                </div>
+                <br>
+              </div>
+              <div class="col-md-8">
+                <form [formGroup]="fa3" >
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div class="form-group">
+                              <label for="exampleInputEmail1">a</label>
+                              <tag-input
+                              [formControlName]="'a'"
+                              style="display: block;
+                              border:  1px solid #ced4da;
+                              flex-direction: row;
+                              flex-wrap: wrap;
+                              position: relative;
+                              cursor: text;
+                              border-bottom: 2px solid #ced4da; "  theme='bootstrap' placeholder='a'></tag-input>
+                          </div>
+                      </div>
+                      <div class="col-md-12">
+                          <div class="form-group">
+                              <label for="exampleInputEmail1">Cc</label>
+                              <tag-input [formControlName]="'cc'"  style="display: block;
+                              border: 1px solid #ced4da;
+                              flex-direction: row;
+                              flex-wrap: wrap;
+                              position: relative;
+                              cursor: text;
+                              border-bottom: 2px solid #ced4da;"  theme='bootstrap' placeholder='cc'></tag-input>
+                          </div>
+                      </div>
+                      <div class="col-md-12">
+                          <div class="form-group">
+                              <label for="exampleInputEmail1">Oggetto</label>
+                              <textarea class="form-control" formControlName="oggetto" id="textareaExample" rows="3" [ngClass]="{'is-invalid': fa3.controls['oggetto'].invalid && submitted}" placeholder="Oggetto"></textarea>
+                          </div>
+                      </div>
+                      <div class="col-md-12">
+                          <div class="form-group">
+                              <label for="exampleInputEmail1">Corpo</label>
+                              <textarea class="form-control" formControlName="corpo" id="textareaExample" [ngClass]="{'is-invalid': fa3.controls['corpo'].invalid && submitted}" rows="3" placeholder="Corpo"></textarea>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="submit" [disabled]="loading_invia_btn" [ngStyle]="{'cursor':(loading_invia_btn ? 'not-allowed' : 'pointer')}" class="button" class="btn btn-primary" (click)="invia()">
+                          Invia
+                          <i class="fa fa-spin fa-spinner" *ngIf="loading_invia_btn"></i> 
+                      </button>
+                      
+                      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()" >
+                          Annulla
+                      </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end of left part of the mail modal -->
+
+        <!-- right part of the mail modal -->
+        <div class="col-md-3">
+          <div class="row" style="margin-right: 7px; margin-left: 7px; background-color: #244e78; padding-top: 20px; padding-bottom: 20px;">
+            <div class="col-md-12" style="color:white;">
+              Invio di:
+            </div>
+            <div class="col-md-12 text-center " >
+              <p style="color:#e8ef85;"> Lista Contratti</p>
+              <p style="color:white;"> Filtro per: <span style="color:#e8ef85;" > {{ component=='listacontratti'?tipo:'' }} </span></p>
+              <p style="color:white;"> Valore: <span style="color:#e8ef85;"> {{ component=='listacontratti'?valore:'' }} *</span></p>
+            </div>
+            <div class="col-md-12" style="color:white;">
+              Invio di:
+            </div>
+            <div class="col-md-12 text-center " >
+              <p style="color:#e8ef85;"> Segnalazioni</p>
+              <p style="color:white;"> Filtro per: <span style="color:#e8ef85;" > {{ component=='segnalazioni'?tipo:'' }}</span></p>
+              <p style="color:white;"> Valore: <span style="color:#e8ef85;"> {{ component=='segnalazioni'?valore:'' }}*</span></p>
+            </div>
+
+            <div class="col-md-12" style="color:white;">
+              Invio di:
+            </div>
+            <div class="col-md-12 text-center " >
+              <p style="color:#e8ef85;"> Interogazioni</p>
+              <p style="color:white;"> Filtro per: <span style="color:#e8ef85;" > Multiparametri</span></p>
+            </div>
+          </div>
+        </div>
+        <!-- end of right part of the mail modal -->
+
+      </div>
+    </div>
+  </div>
+</ng-template>

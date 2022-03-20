@@ -1,0 +1,340 @@
+<div class="bg-light" id="sidebar-wrapper">
+
+
+
+
+  <div class="modal-body" style="padding: 0rem;">
+      <div class="container-fluid">
+
+
+              <div class="col-md-12 mt-3">
+                <form [formGroup] = "fa" class="form">
+                  <div class="row" >
+                      <div class="col-md-2">
+                          <div class="row" style="margin-right: 7px; margin-left: 7px; background-color: #fbda67; padding-top: 20px; padding-bottom: 20px;">
+                              <div class="col-md-12 text-center">
+                                  <p>Eventuali !</p>
+                                  <p>Segnalazioni</p>
+                              </div>
+                          </div>
+                          <br>
+                          <div class="row" style="margin-right: 7px; margin-left: 7px; padding-top: 20px; padding-bottom: 20px;">
+                              <div class="col-md-12 mt-2">
+
+                                  <button class="btn btn-primary btn-lg btn-block" type="submit"    (click)="edit(fa.value)"  style="background-color: #9dc4e7;"> Salva </button>
+                              </div>
+                              <br>
+                              <div class="col-md-12 mt-2 mb-3">
+                                  <button class="btn btn-primary btn-lg btn-block" style="background-color: #9dc4e7;"> Elimina </button>
+                              </div>
+                              <br>
+                              <div class="col-md-12 mt-3">
+                                  <button class="btn btn-primary btn-lg btn-block" style="background-color: #d3def2;"> Annulla </button>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-10">
+                          <div class="row">
+                              <div class="col-md-7">
+                                  <div class="row">
+                                      <div class="col-md-3 col-padding" >
+                                          <label for="">Owners*</label>
+                                          <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline" >
+                                              <input matInput placeholder="" formControlName="owner"/>
+                                          </mat-form-field>
+                                          <mat-error  *ngIf="!fa.controls['owner'].valid && submitted">
+                                              champ requis
+                                          </mat-error>
+                                      </div>
+                                      <div class="col-md-3 col-padding">
+                                          <label for="">Sede*</label>
+                                          <mat-form-field appearance="outline">
+                                              <select matNativeControl required >
+                                              <option value="volvo">Volvo</option>
+                                              <option value="saab">Saab</option>
+                                              <option value="mercedes">Mercedes</option>
+                                              <option value="audi">Audi</option>
+                                              </select>
+                                          </mat-form-field>
+                                          <mat-error *ngIf="!fa.controls['sede'].valid && submitted">
+                                              champ requis
+                                          </mat-error>
+                                      </div>
+                                      <div class="col-md-3 col-padding">
+                                          <label for="">Azienda*</label>
+                                          <mat-form-field appearance="outline" >
+                                              <select matNativeControl required formControlName="azienda">
+                                              <option value="volvo">Volvo</option>
+                                              <option value="saab">Saab</option>
+                                              <option value="mercedes">Mercedes</option>
+                                              <option value="audi">Audi</option>
+                                              </select>
+                                          </mat-form-field>
+                                          <mat-error *ngIf="!fa.controls['azienda'].valid && fa.controls['azienda'].touched">
+                                              champ requis
+                                          </mat-error>
+                                      </div>
+                                      <div class="col-md-3 col-padding">
+                                          <label for="">Codice Contratto</label>
+                                          <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline">
+                                              <input matInput placeholder="" formControlName="codice"/>
+                                          </mat-form-field>
+                                          <mat-error *ngIf="!fa.controls['codice'].valid && fa.controls['codice'].touched">
+                                              champ requis
+                                          </mat-error>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-md-5">
+                                  <div class="row">
+                                      <div class="col-md-4 col-padding">
+                                          <label for="">Tipo Importo*</label>
+                                          <mat-form-field appearance="outline" formControlName="tipo_importo">
+                                              <select matNativeControl required >
+                                              <option value="volvo">Volvo</option>
+                                              <option value="saab">Saab</option>
+                                              <option value="mercedes">Mercedes</option>
+                                              <option value="audi">Audi</option>
+                                              </select>
+                                          </mat-form-field>
+                                          <mat-error *ngIf="!fa.controls['tipo_importo'].valid && fa.controls['tipo_importo'].touched">
+                                              champ requis
+                                          </mat-error>
+                                      </div>
+                                      <div class="col-md-4 col-paddingextrg">
+                                          <label for=""><span>&nbsp;</span></label>
+                                          <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline">
+                                              <input matInput placeholder="" />
+                                          </mat-form-field>
+                                          <mat-error *ngIf="valid">
+                                              champ requis
+                                          </mat-error>
+                                      </div>
+                                      <div class="col-auto">
+                                          <label for=""><span>&nbsp;</span></label>
+                                          <div class="example-button-container" style="margin-top: 5px;">
+                                              <button mat-mini-fab style="background-color:#579ddb" aria-label="Example icon button with a plus one icon">
+                                                  <mat-icon class="add" >+</mat-icon>
+                                              </button>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+
+
+                          </div>
+                          <div class="row">
+                              <div class="col-md-7">
+                                  <div class="row">
+                                      <div class="col-md-3 col-padding" >
+                                          <label for="">Fornitore*</label>
+                                          <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline" >
+                                              <input matInput placeholder="" formControlName="fornitore"/>
+                                          </mat-form-field>
+                                          <mat-error *ngIf="!fa.controls['fornitore'].valid && fa.controls['fornitore'].touched">
+                                              champ requis
+                                          </mat-error>
+                                      </div>
+                                      <div class="col-md-3 col-padding">
+                                          <label for="">C.F./P.Iva*</label>
+                                          <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline" >
+                                              <input matInput placeholder=""  formControlName="iva"/>
+                                          </mat-form-field>
+                                          <mat-error *ngIf="!fa.controls['iva'].valid && fa.controls['iva'].touched">
+                                              champ requis
+                                          </mat-error>
+                                      </div>
+                                      <div class="col-md-3 col-padding">
+                                          <label for="">Lop Cliente*</label>
+                                          <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline" >
+                                              <input matInput placeholder="" formControlName="lop-cliente"/>
+                                          </mat-form-field>
+                                          <mat-error *ngIf="!fa.controls['lop-cliente'].valid && fa.controls['lop-cliente'].touched">
+                                              champ requis
+                                          </mat-error>
+                                      </div>
+                                      <div class="col-md-3 col-padding">
+                                          <label for="">Tipologia Contratto</label>
+                                          <mat-form-field appearance="outline" >
+                                              <select matNativeControl required formControlName="tipologia_contratto">
+                                              <option value="volvo">Volvo</option>
+                                              <option value="saab">Saab</option>
+                                              <option value="mercedes">Mercedes</option>
+                                              <option value="audi">Audi</option>
+                                              </select>
+                                          </mat-form-field>
+                                          <mat-error *ngIf="!fa.controls['tipologia_contratto'].valid && fa.controls['tipologia_contratto'].touched">
+                                              champ requis
+                                          </mat-error>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-md-5">
+                                  <div class="row">
+                                      <div class="col-md-4 col-padding text-center">
+                                          <label for="">Stato Contratto*</label>
+                                          <label for="">Stato Contratto*</label>
+                                          <label for="">Stato Contratto*</label>
+
+                                      </div>
+                                      <div class="col-md-4 col-paddingextrg">
+                                          <label for=""><span>&nbsp;</span></label>
+                                          <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline">
+                                              <input matInput placeholder=""/>
+                                          </mat-form-field>
+                                          <mat-error *ngIf="valid">
+                                              champ requis
+                                          </mat-error>
+                                      </div>
+                                      <div class="col-auto">
+                                          <label for=""><span>&nbsp;</span></label>
+                                          <div class="example-button-container" style="margin-top: 5px;">
+                                              <button mat-stroked-button mat-mini-fab color="accent">-</button>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-6">
+                                  <div class="row">
+                                      <div class="col-md-3">
+                                          <label for="">Data validità* </label>
+                                          <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline" >
+                                              <input type="date" matInput placeholder=""/>
+                                          </mat-form-field>
+                                          <mat-error *ngIf="valid">
+                                              champ requis
+                                          </mat-error>
+                                      </div>
+                                      <div class="col-md-5">
+                                          <div class="row">
+                                              <div class="col-md-4 col-padding">
+                                                  <label for="">Periodo* </label>
+                                                  <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline" >
+                                                      <input type="text" matInput placeholder=""/>
+                                                  </mat-form-field>
+                                              </div>
+                                              <div class="col-md-8 col-padding">
+                                                  <label for=""> Preavvisa disdetta* </label>
+                                                  <mat-form-field appearance="outline" >
+                                                      <select matNativeControl required >
+                                                      <option value="saab">Saab</option>
+                                                      <option value="mercedes">Mercedes</option>
+                                                      <option value="audi">Audi</option>
+                                                      </select>
+                                                  </mat-form-field>
+                                              </div>
+                                          </div>
+
+
+                                          <mat-error *ngIf="valid">
+                                              champ requis
+                                          </mat-error>
+                                      </div>
+                                      <!-- <div class="col-md-3">
+                                          <label for="">Preavvisa disdetta*</label>
+                                          <mat-form-field appearance="outline" >
+                                              <select matNativeControl required >
+                                              <option value="saab">Saab</option>
+                                              <option value="mercedes">Mercedes</option>
+                                              <option value="audi">Audi</option>
+                                              </select>
+                                          </mat-form-field>
+                                          <mat-error *ngIf="valid">
+                                              champ requis
+                                          </mat-error>
+                                      </div> -->
+                                      <div class="col-md-4 col-padding">
+                                          <label for="">Data Scandenza*</label>
+                                          <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline" >
+                                              <input type="date" matInput placeholder=""/>
+                                          </mat-form-field>
+                                          <mat-error *ngIf="valid">
+                                              champ requis
+                                          </mat-error>
+                                      </div>
+                                  </div>
+                                  <div class="row">
+                                      <div class="col-md-4">
+                                          <label for="">Data rinnovo*</label>
+                                          <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline" >
+                                              <input type="date" matInput placeholder=""/>
+                                          </mat-form-field>
+                                          <mat-error *ngIf="valid">
+                                              champ requis
+                                          </mat-error>
+                                      </div>
+                                      <div class="col-md-4 col-padding">
+                                          <label for="">Rinnovo automatico*</label>
+
+                                          <mat-radio-group aria-label="Select an option" style="padding-top: 10px;">
+                                              <mat-radio-button value="1">Si &nbsp;&nbsp;&nbsp;&nbsp;</mat-radio-button>
+                                              <mat-radio-button value="2">No</mat-radio-button>
+                                          </mat-radio-group>
+                                          <mat-error *ngIf="valid">
+                                              champ requis
+                                          </mat-error>
+                                      </div>
+                                      <div class="col-md-4 col-padding">
+                                          <label for="">Preavvisa disdetta*</label>
+                                          <mat-form-field appearance="outline" >
+                                              <select matNativeControl required >
+                                              <option value="saab">Saab</option>
+                                              <option value="mercedes">Mercedes</option>
+                                              <option value="audi">Audi</option>
+                                              </select>
+                                          </mat-form-field>
+                                          <mat-error *ngIf="valid">
+                                              champ requis
+                                          </mat-error>
+                                      </div>
+
+                                  </div>
+                              </div>
+                              <div class="col-md-4">
+                                  <label for="">Notes*</label>
+                                  <mat-form-field class="form-element" appearance="outline">
+                                      <textarea matAutosizeMinRows=5
+                                      matInput
+                                      placeholder="Information supplémentaire"
+                                      ></textarea>
+                                  </mat-form-field>
+                              </div>
+                              <div class="col-md-2 " >
+                                  <div style="background-color: #f6d765;">
+                                      <label for="" style="text-align: center;">Blocca Mail Scandenza</label>
+                                      <span class="example-list-section">
+                                          <ul>
+                                          <li >
+                                              <mat-checkbox >
+                                              preavviso
+                                              </mat-checkbox>
+                                          </li>
+                                          <li >
+                                              <mat-checkbox >
+                                              Contratto
+                                              </mat-checkbox>
+                                          </li>
+                                          </ul>
+                                      </span>
+                                  </div>
+
+                                  <mat-error *ngIf="valid">
+                                      champ requis
+                                  </mat-error>
+                              </div>
+
+                          </div>
+
+
+                      </div>
+                  </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+
+  </div>
+
+

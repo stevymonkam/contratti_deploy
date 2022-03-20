@@ -1,0 +1,859 @@
+
+<div class="d-flex" id="wrapper" *ngIf="flag_home">
+  <!-- Sidebar -->
+  <div class="bg-light" id="sidebar-wrapper">
+    <app-header></app-header>
+
+      <div class="row" style="margin-right: 7px; margin-left: 7px; background-color: #fbda67; padding-top: 20px; padding-bottom: 70px;"  >
+          <div class="col-md-12 text-center">
+            <span style="max-height: 50px; max-width: 10px;"><img style="max-height: 50px; max-width: 30px;" src="assets/images/!.png" > </span>
+            <div *ngIf="flag_segnali1"  >
+             <p>
+              Attenzione !
+            </p>
+          </div>
+          <div *ngIf="flag_segnali1"  >
+          <p>
+              <a href="#" style="color: white;" ng>Sono presenti criticitâ </a>
+         </p>
+         </div>
+         <div *ngIf="flag_segnali2"  >
+          <p>
+              <a href="#" style="color: white;" ng>non Sono presenti criticitâ </a>
+         </p>
+         </div>
+          </div>
+      </div>
+      <br>
+      <div class="row" style="margin-right: 7px; margin-left: 7px; background-color: #00af50; padding-top: 20px; padding-bottom: 20px;">
+          <div class="col-md-12 text-center">
+              <p>
+                  <a href="#" style="color: white;">Lista filtrata per </a>
+              </p>
+              <p>
+                  <a href="#" style="color: white;">{{colone}} </a>
+              </p>
+              <p>
+                  <a href="#" style="color: white;">{{search}} </a>
+              </p>
+
+
+          </div>
+      </div>
+      <br>
+      <div class="row" style="margin-right: 7px; margin-left: 7px; padding-top: 20px; padding-bottom: 20px;">
+          <div class="col-md-12 mt-2">
+              <button [disabled]="flag_gestione" [ngStyle]="{'cursor': (flag_gestione? 'not-allowed':'pointer')}"  class="btn btn-primary btn-lg btn-block" (click)="openModalAdd()" style="background-color: #9dc4e7;"> Nuova </button>
+          </div>
+          <br>
+          <div class="col-md-12 mt-2">
+              <button class="btn btn-primary btn-lg btn-block" (click) = "opensignalisazioni()"  style="background-color: #fed967;"> Segnalazioni </button>
+          </div>
+          <br>
+          <div class="col-md-12 mt-2">
+              <button class="btn btn-primary btn-lg btn-block" (click) = "openinterrogazioni()" style="background-color: #ecb38e;"> Interrogazioni </button>
+          </div>
+      </div>
+
+      <div class="list-group list-group-flush">
+
+      <!-- <a href="#" class="list-group-item list-group-item-action bg-light">Dashboard</a>
+      <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
+      <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
+      <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
+      <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
+      <a href="#" class="list-group-item list-group-item-action bg-light">Status</a> -->
+    </div>
+  </div>
+  <!-- /#sidebar-wrapper -->
+  <!-- Page Content -->
+
+    <div id="page-content-wrapper">
+      <nav class="navbar navbar-expand-lg navbar-light border-bottom" style="background-color:#9dc4e7; border-bottom: 1px solid #1f4e78!important;height:66px;">
+        <button class="btn btn-primary" id="menu-toggle"><span class="navbar-toggler-icon"></span></button>
+
+      </nav>
+    <nav class="navbar navbar-expand-lg navbar-light border-bottom" style="background-color:#1f4e78; height: 85px;">
+      <div class="row" style="width: -webkit-fill-available;">
+          <div class="col-md-3"></div>
+          <div class="col-md-3"><div style="color: white;">Tipo</div></div>
+          <div class="col-md-3"><div style="color: white;">Valore</div></div>
+          <div class="col-md-3"></div>
+      </div>
+
+    </nav>
+
+    <div class="container-fluid">
+
+      <div class="row " style="width: -webkit-fill-available; background-color:#1f4e78;">
+          <div class="col-md-3 my-auto"> <div style="color: white; text-align: center; vertical-align: middle;"> Lista Contratti </div>  </div>
+
+          <div class="col-md-3">
+              <div style="text-align: center;">
+                  <mat-form-field appearance="fill" >
+                      <select matNativeControl required #mySelect (change)="onChange(mySelect.value)" >
+                        <option *ngFor="let tipo of displayedColumnstipo" [value]="tipo">{{tipo}}</option>
+                    </select>
+                  </mat-form-field>
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div style="color: white;">
+                  <mat-form-field fxFlex="100%">
+                    <input matInput type="text" id="teleleasing" [(ngModel)]="search"  placeholder="" />
+                </mat-form-field>
+              </div>
+          </div>
+          <div class="col-md-2 ">
+              <div style="color: white; padding-top: 12px;">
+                  <button class="btn btn-primary btn-lg btn-block" (click) ="doFilter()" style="background-color: #9dc4e7;"> Cerca </button>
+              </div>
+          </div>
+      </div>
+
+        <br>
+        <table mat-table id="ExampleTable"  matSort matSortStart="asc" [dataSource]="dataSource"  class="mat-elevation-z8" >
+          <!-- Name Column -->
+            <ng-container matColumnDef="azienda">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Società. </th>
+                <td mat-cell *matCellDef="let element; let i = index;"> {{element.azienda}}
+
+                </td>
+            </ng-container>
+
+          <!-- Name Column -->
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Cod. Contratto </th>
+                <td mat-cell *matCellDef="let element; let i = index;"> {{element.id}} </td>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="tipologia_contratto">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipologia </th>
+                <td mat-cell *matCellDef="let element; let i = index;" > {{element.tipologia_contratto}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="sede">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Sede </th>
+                <td mat-cell *matCellDef="let element; let i = index;" > {{element.sede}} </td>
+            </ng-container>
+          <!-- Symbol Column -->
+
+            <ng-container matColumnDef="stato_contratto">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Stato </th>
+                <td mat-cell *matCellDef="let element; let i = index;" > {{element.stato_contratto}} </td>
+            </ng-container>
+                <!-- Symbol Column -->
+
+            <ng-container matColumnDef="data_scadenza">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header mat-sort-header> Data Scad </th>
+                <td mat-cell *matCellDef="let element; let i = index;" > {{element.data_scadenza}} </td>
+            </ng-container>
+                <!-- Symbol Column -->
+
+            <ng-container matColumnDef="preavviso">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>  Data Scad preavviso </th>
+                <td mat-cell *matCellDef="let element; let i = index;" > {{element.preavviso}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="owner">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> owner </th>
+                <td mat-cell *matCellDef="let element; let i = index;" > {{element.owner}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="fornitore">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fornitore </th>
+                <td mat-cell *matCellDef="let element; let i = index;" > {{element.fornitore}} </td>
+            </ng-container>
+            <!-- Symbol Column -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row [ngClass]="{'make-gold': i%2==0 }" *matRowDef="let row; columns: displayedColumns; let i = index" (click)="openEditModal2(row.id)"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 15]" #paginatorcontrat showFirstLastButtons ></mat-paginator>
+    </div>
+  </div>
+</div>
+
+<ng-template #editEmailModal1 let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="editProfileLabel"></h5>
+        <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close" >
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body" style="padding: 0rem;">
+        <div class="container-fluid">
+            <div class="row" >
+                <div class="col-md-12" style="background-color: #579ddb;" >
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div style="float: left;">
+                                <img style="height: 80px; width: 80px;" src="../assets/images/logo.png" alt="">
+                            </div>
+                        </div>
+                        <div class="col-md-4 my-auto text-center">
+                            <div> Contratii 2.0 </div>
+                        </div>
+                        <div class="col-md-4"> </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 mt-3">
+                    <div class="row" >
+                        <div class="col-md-4">
+                            <div class="row" style="margin-right: 7px; margin-left: 7px; background-color: #244e78; padding-top: 20px; padding-bottom: 20px;">
+                                <div class="col-md-12" style="color:white;">
+                                Invio di:
+                                </div>
+                                <div class="col-md-12 text-center " style="color:#e8ef85;">
+                                <p> CONTRATTO</p>
+                                <p> XXXYYYKKK</p>
+                                </div>
+                                <div class="col-md-12" style="color:white;">
+                                <p>Documenti</p>
+                                <ul>
+                                    <li>contratto</li>
+                                    <li>Allegato</li>
+                                    <li>Rinnovo</li>
+                                    <li>Disdetta</li>
+                                </ul>
+                                </div>
+                            </div>
+                        <br>
+                        </div>
+                        <div class="col-md-8">
+                            <form [formGroup]="fa3" >
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">a</label>
+                                            <tag-input
+                                            [formControlName]="'a'"
+                                            style="display: block;
+                                            border:  1px solid #ced4da;
+                                            flex-direction: row;
+                                            flex-wrap: wrap;
+                                            position: relative;
+                                            cursor: text;
+                                            border-bottom: 2px solid #ced4da; "  theme='bootstrap' placeholder='a'></tag-input>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Cc</label>
+                                            <tag-input [formControlName]="'cc'"  style="display: block;
+                                            border: 1px solid #ced4da;
+                                            flex-direction: row;
+                                            flex-wrap: wrap;
+                                            position: relative;
+                                            cursor: text;
+                                            border-bottom: 2px solid #ced4da;"  theme='bootstrap' placeholder='cc'></tag-input>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Oggetto</label>
+                                            <textarea class="form-control" formControlName="oggetto" id="textareaExample" rows="3" [ngClass]="{'is-invalid': fa3.controls['oggetto'].invalid && submitted}" placeholder="Oggetto"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Corpo</label>
+                                            <textarea class="form-control" formControlName="corpo" id="textareaExample" [ngClass]="{'is-invalid': fa3.controls['corpo'].invalid && submitted}" rows="3" placeholder="Corpo"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" [disabled]="loading_invia_btn" [ngStyle]="{'cursor':(loading_invia_btn ? 'not-allowed' : 'pointer')}" class="button" class="btn btn-primary" (click)="invia()">
+                                        Invia
+                                        <i class="fa fa-spin fa-spinner" *ngIf="loading_invia_btn"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()" >
+                                        Annulla
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+
+<!-- modal mail fin-->
+
+
+<div class="bg-light" id="sidebar-wrapper" *ngIf="flag_modal">
+
+
+  <div class="container-fluid" style="background-color: #d9e5f0;">
+      <div class="row" >
+          <div class="col-md-12" style="background-color: #579ddb;" >
+              <div class="row">
+                  <div class="col-md-4"></div>
+                  <div class="col-md-4 my-auto text-center" >
+                      <div *ngIf="flag_edit"  >Dettaglio Contratto</div>
+                  </div>
+                  <div class="col-md-4" >
+                    <button type="button" class="close" (click)="dismiss()" aria-label="Close" >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div style="float: right;">
+                      <div *ngIf="flag_normal"  >
+                        <button (click) = "Nouvo()" class="btn-primary btn-block" style="background-color: #fbda67; color: black;">Nuovo / Visualizza</button>
+                      </div>
+                    </div>
+                </div>
+              </div>
+          </div>
+
+          <div class="col-md-12 mt-3">
+            <form [formGroup] = "fa" class="form">
+              <div class="row" >
+                    <div class="col-md-2">
+                      <div class="row" style="margin-right: 7px; margin-left: 7px; background-color: #fbda67; padding-top: 20px; padding-bottom: 20px;">
+                          <div class="col-md-12 text-center">
+                            <p *ngIf="flag_seganli_nouvo">non ci sono</p>
+                            <p>Segnalazioni :</p>
+                            <p *ngIf="flag_seganli_edit">{{segnailsazioni}}</p>
+
+                          </div>
+
+                      </div>
+                      <div class="row" style="margin-right: 7px; margin-left: 7px; padding-top: 70px; padding-bottom: 20px;">
+
+                      <div class="col-md-12 mt-2 mb-3 text-center">
+                        <span style="max-height: 50px; max-width: 10px;"><img style="max-height: 100px; max-width: 150px;" src="assets/images/contrat.jpg" > </span>
+                      </div>
+                      </div>
+                      <br>
+                        <div class="row" style="margin-right: 7px; margin-left: 7px; padding-top: 120px; padding-bottom: 20px;">
+                            <div class="col-md-12 mt-2 mb-3">
+                                <button [disabled]="flag_gestione"  [disabled]="flag_readoly || loading_salva_btn" class="btn btn-primary btn-lg btn-block" (click)="edit1()"  style="background-color: #9dc4e7;" [ngStyle]="{'cursor': (loading_salva_btn? 'not-allowed':'pointer')}" *ngIf="flag_normal">
+                                    <i class="fa fa-spin fa-spinner" *ngIf="loading_salva_btn"></i>
+                                    Salva
+                                </button>
+                                <button  [disabled]="flag_readoly || loading_salva_btn" class="btn btn-primary btn-lg btn-block" (click)="edit2()"  style="background-color: #9dc4e7;" [ngStyle]="{'cursor': (loading_salva_btn? 'not-allowed':'pointer')}" *ngIf="flag_edit">
+                                    <i class="fa fa-spin fa-spinner" *ngIf="loading_salva_btn"></i>
+                                    Salva
+                                </button>
+                            </div>
+
+                            <br>
+                            <div class="col-md-12 mt-2 mb-5">
+                                <button [disabled]="flag_readoly" [ngStyle]="{'cursor': (flag_readoly? 'not-allowed':'pointer')}"  (click)="deletecontrat()" class="btn btn-primary btn-lg btn-block" style="background-color: #9dc4e7;"> Elimina </button>
+                            </div>
+                            <br>
+                            <div class="col-md-12 mt-3">
+                                <button  [disabled]="flag_readoly" [ngStyle]="{'cursor': (flag_readoly? 'not-allowed':'pointer')}" class="btn btn-primary btn-lg btn-block" style="background-color: #d3def2;"> Annulla </button>
+                            </div>
+                        </div>
+                    </div>
+                  <div class="col-md-10">
+                      <div class="row">
+                          <div class="col-md-5">
+                              <div class="row">
+                                  <div class="col-md-4 col-padding" >
+                                      <label for="">Owners*</label>
+                                      <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline" >
+                                          <input matInput placeholder="" formControlName="owner" [readonly]="flag_readoly"/>
+                                          <input type = "hidden"  formControlName="id_contrat" [disabled]="flag_readoly"/>
+                                      </mat-form-field>
+                                      <mat-error *ngIf="!fa.controls['owner'].valid && submitted">
+                                          champ requis
+                                      </mat-error>
+                                  </div>
+                                  <div class="col-md-4 col-padding" >
+                                      <label for="">Sede*</label>
+                                      <mat-form-field appearance="outline" >
+                                        <select   matNativeControl required formControlName="sede" enabled="true">
+                                            <option [disabled]="flag_readoly" value="contratti multisede">CONTRATTI MULTISEDE</option>
+                                            <option [disabled]="flag_readoly" value="sede ibe italy">SEDE IBE ITALY</option>
+                                            <option [disabled]="flag_readoly" value="sede ibe uk">SEDE IBE UK</option>
+                                            <option [disabled]="flag_readoly" value="sede milano affari 2">SEDE MILANO AFFARI 2</option>
+                                            <option [disabled]="flag_readoly" value="sede milano affari 3">SEDE MILANO AFFARI 3</option>
+                                            <option [disabled]="flag_readoly" value="sede milano valtorta">SEDE MILANO VALTORTA</option>
+                                            <option [disabled]="flag_readoly" value="sede pomezia">SEDE POMEZIA</option>
+                                            <option [disabled]="flag_readoly" value="sede pontinia">SEDE PONTINIA</option>
+                                            <option [disabled]="flag_readoly" value="sede roma esperanto">SEDE ROMA ESPERANTO</option>
+                                            <option [disabled]="flag_readoly" value="sede roma sansotta">SEDE ROMA SANSOTTA</option>
+                                            <option [disabled]="flag_readoly" value="sede spoleto">SEDE SPOLETO</option>
+                                            <option [disabled]="flag_readoly" value="sede torino giulio cesare">SEDE TORINO GIULIO CESARE</option>
+                                            <option [disabled]="flag_readoly" value="sede verona">SEDE VERONA</option>
+                                            <option [disabled]="flag_readoly" value="sedex">SEDEX</option>
+                                        </select>
+                                    </mat-form-field>
+                                      <mat-error *ngIf="!fa.controls['sede'].valid && submitted">
+                                        champ requis
+                                      </mat-error>
+                                  </div>
+                                  <div class="col-md-4 col-padding">
+                                      <label for="">Azienda*</label>
+                                      <mat-form-field appearance="outline">
+                                          <select [readonly]="flag_readoly" matNativeControl required formControlName="azienda">
+                                            <option [disabled]="flag_readoly"[disabled]="flag_besol" value="besolutions">besolutions</option>
+                                            <option [disabled]="flag_readoly"[disabled]="flag_becons" value="beconsulting">beconsulting</option>
+                                            <option [disabled]="flag_readoly"[disabled]="flag_ibe" value="bethink">ibe</option>
+                                            <option [disabled]="flag_readoly"[disabled]="flag_besfcs" value="bepologne">besfcs</option>
+
+                                          </select>
+                                      </mat-form-field>
+
+                                  <mat-error *ngIf="!fa.controls['azienda'].valid && submitted">
+                                        champ requis
+                                      </mat-error>
+                                  </div>
+
+                              </div>
+                          </div>
+                        <div class="col-md-7">
+                            <div class="row">
+                              <div class="col-md-5 col-padding">
+                                <label for="">Codice Contratto</label>
+                                <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline">
+                                    <input matInput placeholder="" formControlName="codice" [readonly]="flag_readoly"/>
+                                </mat-form-field>
+                                <mat-error *ngIf="!fa.controls['codice'].valid && submitted">
+                                    champ requis
+                                </mat-error>
+                            </div>
+                                <div class="col-md-2 col-padding">
+                                    <label for="">Tipo Importo*</label>
+                                    <mat-form-field appearance="outline" >
+                                        <select matNativeControl required formControlName="tipo_importo">
+                                        <option value="locazione">Canone locazione</option>
+                                        <option value="Oneri aggiuntivi">Oneri aggiuntivi</option>
+                                        <option value="Riscaldamento">Riscaldamento</option>
+                                        </select>
+                                    </mat-form-field>
+                                    <mat-error *ngIf="(arrayValore?.length === 0 && submitted) || (arrayValore?.length === 0 && added)">
+                                    champ requis
+                                    </mat-error>
+                                </div>
+                                <div class="col-md-2 col-paddingextrg">
+                                    <label for=""><span>&nbsp;</span></label>
+                                    <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline">
+                                        <input matInput placeholder="" formControlName="valore_importo" [readonly]="flag_readoly"/>
+                                    </mat-form-field>
+                                    <mat-error *ngIf="(arrayValore?.length === 0 && submitted) || (arrayValore?.length === 0 && added)">
+                                    champ requis
+                                    </mat-error>
+                                </div>
+                                <div class="col-auto">
+                                    <label for=""><span>&nbsp;</span></label>
+                                    <div class="example-button-container" style="margin-top: 5px;">
+                                        <button mat-mini-fab style="background-color:#579ddb" (click)="addValoreImporto(fa.controls['valore_importo'].value, fa.controls['tipo_importo'].value)" aria-label="Example icon button with a plus one icon">
+                                            <mat-icon class="add" >+</mat-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                      </div>
+                      <div class="row">
+                          <div class="col-md-7">
+                              <div class="row">
+                                  <div class="col-md-3 col-padding" >
+                                      <label for="">Fornitore*</label>
+                                      <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline" >
+                                          <input matInput placeholder="" formControlName="fornitore" [readonly]="flag_readoly"/>
+                                      </mat-form-field>
+                                      <mat-error *ngIf="!fa.controls['fornitore'].valid && submitted"  >
+                                          champ requis
+                                      </mat-error>
+                                  </div>
+                                  <div class="col-md-3 col-padding">
+                                      <label for="">C.F./P.Iva*</label>
+                                      <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline" >
+                                          <input matInput placeholder="" formControlName="iva" [readonly]="flag_readoly"/>
+                                      </mat-form-field>
+                                      <mat-error *ngIf="!fa.controls['iva'].valid && submitted">
+                                          champ requis
+                                      </mat-error>
+                                  </div>
+                                  <div class="col-md-3 col-padding">
+                                      <label for="">Lop Cliente*</label>
+                                      <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline" >
+                                          <input matInput placeholder="" formControlName="lop_cliente" [readonly]="flag_readoly"/>
+                                      </mat-form-field>
+                                      <mat-error *ngIf="!fa.controls['lop_cliente'].valid && submitted">
+                                          champ requis
+                                      </mat-error>
+                                  </div>
+                                  <div class="col-md-3 col-padding">
+                                      <label for="">Tipologia Contratto</label>
+                                      <mat-form-field appearance="outline" >
+                                          <select matNativeControl required formControlName="tipologia_contratto" [readonly]="flag_readoly">
+                                            <option [disabled]="flag_readoly" value="locazione">LOCAZIONE</option>
+                                            <option [disabled]="flag_readoly" value="pulizie">PULIZIE</option>
+                                            <option [disabled]="flag_readoly" value="stampanti">STAMPANTI</option>
+                                            <option [disabled]="flag_readoly" value="timbratori">TIMBRATORI</option>
+                                            <option [disabled]="flag_readoly" value="taxi">TAXI</option>
+                                            <option [disabled]="flag_readoly" value="utenze">UTENZE</option>
+                                            <option [disabled]="flag_readoly" value="smaltimento rifiuti">SMARTIMENTO RIFIUTI</option>
+                                            <option [disabled]="flag_readoly" value="altro">ALTRO</option>
+                                            <option [disabled]="flag_readoly" value="presidi sicurezza">PRESIDI SICUREZZA</option>
+                                            <option [disabled]="flag_readoly" value="attivo-progetto">ATTIVO-PROGETTO</option>
+                                            <option [disabled]="flag_readoly" value="attivo-time material">ATTIVO-TIME MATERIAL</option>
+                                            <option [disabled]="flag_readoly" value="attivo servizio">ATTIVO SERVIZIO</option>
+                                            <option [disabled]="flag_readoly" value="passivo-progetto">PASSIVO-PROGETTO</option>
+                                            <option [disabled]="flag_readoly" value="passivo-time material">PASSIVO-TIME MATERIAL</option>
+                                            <option [disabled]="flag_readoly" value="passivo servizio">PASSIVO SERVIZIO</option>
+                                            <option [disabled]="flag_readoly" value="piva individuale">PIVA INDIVIDUALE</option>
+                                            <option [disabled]="flag_readoly" value="interinali">INTERINALI</option>
+                                            <option [disabled]="flag_readoly" value="accordo quadro 3ze parti">ACCORDO QUADRO 3ZE PARTI</option>
+                                            <option [disabled]="flag_readoly" value="ingaggio 3ze parti">INGAGGIO 3ZE PARTI</option>
+                                            <option [disabled]="flag_readoly" value="contratto per servizi generali">CONTRATTI PER SERVIZI GENERALI</option>
+                                          </select>
+                                      </mat-form-field>
+                                      <mat-error *ngIf="!fa.controls['tipologia_contratto'].valid && submitted">
+                                        champ requis
+                                      </mat-error>
+                                  </div>
+                              </div>
+                          </div>
+                            <div class="col-md-5">
+                                <div class="row">
+                                  <div class="col-md-3 col-padding">
+                                    <label for="">stato contratto</label>
+                                    <mat-form-field appearance="outline" >
+                                        <select matNativeControl required formControlName="stato_contratto" [readonly]="flag_readoly">
+                                          <option [disabled]="flag_readoly" value="disdettato">DISDETTATO</option>
+                                          <option [disabled]="flag_readoly" value="in firma a marca bosco">IN FIRMA A MARCO BOSCO</option>
+                                          <option [disabled]="flag_readoly" value="in firma ceo">IN FIRMA CEO</option>
+                                          <option [disabled]="flag_readoly" value="in firma fornitore">IN FIRMA FORNITORE</option>
+                                          <option [disabled]="flag_readoly" value="in rinnovo">IN RINNOVO</option>
+                                          <option [disabled]="flag_readoly" value="on hold">ON HOLD</option>
+                                          <option [disabled]="flag_readoly" value="scaduto">SCADUTO</option>
+                                          <option [disabled]="flag_readoly" value="terminato">TERMINATO</option>
+                                          <option [disabled]="flag_readoly" value="vigente">vigente</option>
+                                        </select>
+                                    </mat-form-field>
+                                    <mat-error *ngIf="!fa.controls['stato_contratto'].valid && submitted">
+                                      champ requis
+                                    </mat-error>
+                                </div>
+
+                                    <div class="col-md-4 col-padding text-center">
+                                        <ul>
+                                            <li *ngFor="let imp of arrayValore" style="margin-bottom: 7px;">{{imp.importo}}</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-auto col-paddingextrg">
+                                        <ul>
+                                            <li *ngFor="let imp of arrayValore; let i=index" style="margin-bottom: 5px;">
+                                                {{imp.valore}}
+                                                <button class="smallbtn" (click)="removeValoreImporto(i)" *ngIf="arrayValore?.length > 0" color="accent">-</button>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                    <!-- <div class="col-auto">
+                                        <label for=""><span>&nbsp;</span></label>
+                                        <div class="example-button-container" style="margin-top: 5px;">
+                                            <button mat-stroked-button mat-mini-fab class="smallbtn" color="accent">-</button>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-md-6">
+                              <div class="row">
+                                  <div class="col-md-3">
+                                      <label for="">Data validità* </label>
+                                      <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline" >
+                                          <input type="date" matInput placeholder="" formControlName="data_validata" [readonly]="flag_readoly"/>
+                                      </mat-form-field>
+                                      <mat-error  *ngIf="!fa.controls['data_validata'].valid && submitted">
+                                          champ requis
+                                      </mat-error>
+                                  </div>
+                                  <div class="col-md-5">
+                                      <div class="row">
+                                          <div class="col-md-4 col-padding">
+                                            <label for="">Periodo*</label>
+                                            <mat-form-field appearance="outline">
+                                                <select [readonly]="flag_readoly" matNativeControl required formControlName="periodo">
+                                                  <option [disabled]="flag_readoly" value="Mesi">Mesi</option>
+                                                  <option [disabled]="flag_readoly" value="Giorno">Giorno</option>
+
+                                                </select>
+                                            </mat-form-field>
+
+                                        <mat-error *ngIf="!fa.controls['periodo'].valid && submitted">
+                                              champ requis
+                                            </mat-error>
+
+
+                                          </div>
+                                          <div class="col-md-8 col-padding">
+                                              <label for=""> Preavvisa disdetta* </label>
+                                              <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline" >
+                                                <input type="text" matInput placeholder="" formControlName="preavviso" [readonly]="flag_readoly"/>
+                                            </mat-form-field>
+                                            <mat-error  *ngIf="!fa.controls['preavviso'].valid && submitted">
+                                              champ requis
+                                          </mat-error>
+                                          </div>
+                                      </div>
+
+
+                                      <mat-error *ngIf="valid">
+                                          champ requis
+                                      </mat-error>
+                                  </div>
+                                  <!-- <div class="col-md-3">
+                                      <label for="">Preavvisa disdetta*</label>
+                                      <mat-form-field appearance="outline" >
+                                          <select matNativeControl required >
+                                          <option value="saab">Saab</option>
+                                          <option value="mercedes">Mercedes</option>
+                                          <option value="audi">Audi</option>
+                                          </select>
+                                      </mat-form-field>
+                                      <mat-error *ngIf="valid">
+                                          champ requis
+                                      </mat-error>
+                                  </div> -->
+                                  <div class="col-md-4 col-padding">
+                                      <label for="">Data Scadenza*</label>
+                                      <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline" >
+                                          <input type="date" matInput placeholder="" formControlName="data_scadenza" [readonly]="flag_readoly"/>
+                                      </mat-form-field>
+                                      <mat-error *ngIf="!fa.controls['data_scadenza'].valid && submitted">
+                                          champ requis
+                                      </mat-error>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-4">
+                                      <label for="">Data rinnovo*</label>
+                                      <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline" >
+                                          <input type="date" matInput placeholder=""  formControlName="data_rinnovo" [readonly]="flag_readoly"/>
+                                      </mat-form-field>
+                                      <mat-error *ngIf="!fa.controls['data_rinnovo'].valid && submitted">
+                                        champ requis
+                                      </mat-error>
+                                  </div>
+                                  <div class="col-md-4 col-padding">
+                                      <label for="">Rinnovo automatico*</label>
+
+                                      <mat-radio-group aria-label="Select an option" style="padding-top: 10px;" formControlName="rinnovo_automatico">
+                                          <mat-radio-button  [disabled]="flag_readoly" value="1">Si &nbsp;&nbsp;&nbsp;&nbsp;</mat-radio-button>
+                                          <mat-radio-button  [disabled]="flag_readoly" value="2">No</mat-radio-button>
+                                      </mat-radio-group>
+                                      <mat-error *ngIf="!fa.controls['rinnovo_automatico'].valid && submitted">
+                                        champ requis
+                                      </mat-error>
+                                  </div>
+                                  <div class="col-md-4 col-padding">
+                                      <label for="">Data disdetta*</label>
+                                      <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline" >
+                                        <input type="date" matInput placeholder=""  formControlName="data_disdetta" [readonly]="flag_readoly"/>
+                                    </mat-form-field>
+                                    <mat-error *ngIf="!fa.controls['data_rinnovo'].valid && submitted">
+                                      champ requis
+                                    </mat-error>
+                                  </div>
+
+                              </div>
+                          </div>
+                          <div class="col-md-4">
+                              <label for="">Notes*</label>
+                              <mat-form-field class="form-element" appearance="outline">
+                                  <textarea matAutosizeMinRows=5
+                                  matInput
+                                  placeholder="Information supplémentaire"
+                                  formControlName="note"
+                                  [readonly]="flag_readoly"
+                                  ></textarea>
+                              </mat-form-field>
+                              <mat-error *ngIf="!fa.controls['note'].valid && submitted">
+                                champ requis
+                              </mat-error>
+                          </div>
+                          <div class="col-md-2 " >
+                              <div style="background-color: #f6d765;">
+                                  <label for="" style="text-align: center;">Blocca Mail Scandenza</label>
+
+                                  <span class="example-list-section"
+
+                                  >
+                                      <ul>
+                                      <li
+
+                                      >
+                                          <mat-checkbox  [disabled]="flag_readoly" formControlName="mail_preavviso">
+                                          preavviso
+                                          </mat-checkbox>
+                                      </li>
+                                      <li >
+                                          <mat-checkbox  [disabled]="flag_readoly" formControlName="mail_contratto">
+                                          Contratto
+                                          </mat-checkbox>
+                                      </li>
+                                      </ul>
+                                  </span>
+                              </div>
+
+                              <mat-error *ngIf="!fa.controls['mail_preavviso'].valid && !fa.controls['mail_contratto'].valid && submitted">
+                                champ requis
+                              </mat-error>
+                          </div>
+
+                      </div>
+                      <div style="border: 1px solid black; padding: 2px; margin-bottom: 15px;">
+                          <div class="row">
+                              <div class="col-md-10">
+                                <form [formGroup] = "fa2">
+                                  <div class="row">
+
+                                      <div class="col-md-3 ">
+                                          <label for="">Type Doc</label>
+                                          <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline">
+                                              <select matNativeControl required formControlName="tipo_doc" >
+                                                <option [disabled]="flag_readoly" [ngStyle]="{'cursor': (flag_create || flag_readoly? 'not-allowed':'pointer')}" [disabled]="flag_create" value="-----">-----</option>
+                                                 <option [disabled]="flag_readoly" [ngStyle]="{'cursor': (flag_create || flag_readoly? 'not-allowed':'pointer')}" [disabled]="flag_create" value="CONTRATTO">CONTRATTO</option>
+                                                <option [disabled]="flag_readoly" [ngStyle]="{'cursor': (flag_create || flag_readoly? 'not-allowed':'pointer')}" [disabled]="flag_create"value="ALLEGATO">ALLEGATO</option>
+                                                <option [disabled]="flag_readoly" [ngStyle]="{'cursor': (flag_create || flag_readoly? 'not-allowed':'pointer')}" [disabled]="flag_create"value="RINNOVO">RINNOVO</option>
+                                                <option [disabled]="flag_readoly" [ngStyle]="{'cursor': (flag_create || flag_readoly? 'not-allowed':'pointer')}" [disabled]="flag_create"value="DISDETTA">DISDETTA</option>
+                                              </select>
+                                          </mat-form-field>
+                                          <mat-error *ngIf="valid">
+                                              champ requis
+                                          </mat-error>
+                                      </div>
+                                      <div class="col-md-3 col-padding">
+                                          <label for="">Note</label>
+
+                                        <mat-form-field class="example-full-width" floatLabel="never" color="primary" appearance="outline" >
+                                            <input type="text" matInput placeholder="" formControlName="note" [readonly]="flag_readoly" [ngStyle]="{'cursor': (flag_create || flag_readoly? 'not-allowed':'pointer')}" [readonly]="flag_create"/>
+                                        </mat-form-field>
+                                          <mat-error *ngIf="valid">
+                                              champ requis
+                                          </mat-error>
+                                      </div>
+                                      <!--img [src] = "contrafile" /!-->
+                                      <div class="col-md-3 col-paddingextrg " >
+                                        <label for=""><span>&nbsp;</span></label>
+                                            <mat-form-field style="margin-top: -12px">
+                                            <ngx-mat-file-input  (change)="onChangefile($event.target.files[0])" placeholder="Upload"  [disabled]="flag_readoly" [ngStyle]="{'cursor': (flag_create || flag_readoly? 'not-allowed':'pointer')}" [disabled]="flag_create"></ngx-mat-file-input>
+                                          </mat-form-field>
+                                          <mat-error *ngIf="valid">
+                                            champ requis
+                                        </mat-error>
+
+
+                                      </div>
+                                      <div class="col-auto">
+
+
+
+                                          <label for=""><span>&nbsp;</span></label>
+
+                                          <div class="example-button-container" style="margin-top: 5px;">
+                                                <button  [disabled]="flag_readoly " [disabled]="flag_create || loading_sfoglia_btn || !fa2.valid" class="btn btn-primary btn-lg " (click) = "onfile()" [ngStyle]="{'cursor': (!fa2.valid || loading_sfoglia_btn? 'not-allowed':'pointer')}" style="background-color: #ecb38e;">
+                                                    <i class="fa fa-spin fa-spinner" *ngIf="loading_sfoglia_btn"></i>
+                                                    Upload File
+                                                </button> &nbsp;
+
+                                          </div>
+                                      </div>
+
+                                  </div>
+                                    </form>
+                              </div>
+                              <div class="col-md-2"></div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-10">
+                                  <table mat-table #sortcontratmodal="matSort" matSort [dataSource]="dataSource1" class="mat-elevation-z8">
+                                      <!-- Name Column -->
+                                    <ng-container matColumnDef="id">
+                                        <th mat-header-cell *matHeaderCellDef>
+                                            <mat-checkbox (change)="$event ? masterToggle() : null"
+                                                          [checked]="selection.hasValue() && isAllSelected()"
+                                                          [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                            </mat-checkbox>
+                                        </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <mat-checkbox
+                                            (click)="$event.stopPropagation()"
+                                            (change)="$event ? selection.toggle(element) : null"
+                                            [checked]="selection.isSelected(element)" >
+                                            </mat-checkbox>
+                                        </td>
+                                    </ng-container>
+
+                                      <!-- Name Column -->
+                                    <ng-container matColumnDef="tipo_doc">
+                                      <th mat-header-cell *matHeaderCellDef> Tipologia </th>
+                                      <td mat-cell *matCellDef="let element"> {{element.tipo_doc}} </td>
+                                    </ng-container>
+
+                                      <ng-container matColumnDef="id_contrat">
+                                          <th mat-header-cell *matHeaderCellDef> Contratto </th>
+                                          <td mat-cell *matCellDef="let element">  {{element.id_contrat}} </td>
+                                          </ng-container>
+                                      <!-- Weight Column -->
+                                      <ng-container matColumnDef="note">
+                                      <th mat-header-cell *matHeaderCellDef> Note </th>
+                                      <td mat-cell *matCellDef="let element"> {{element.note}} </td>
+                                      </ng-container>
+
+                                      <!-- Symbol Column -->
+                                      <ng-container matColumnDef="documenti">
+                                      <th mat-header-cell *matHeaderCellDef> Documenti </th>
+                                      <td mat-cell *matCellDef="let element"> {{ element.documenti.slice(8) }}
+
+                                      </td>
+
+                                      </ng-container>
+
+                                      <!-- Symbol Column -->
+                                       <!-- Name Column -->
+                                       <ng-container matColumnDef="botton">
+                                        <th mat-header-cell *matHeaderCellDef>  </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.botton}}
+                                          <button mat-raised-button type="button" (click)="pathUpload(element.documenti)" matTooltip="Voir plus d'information" class="btn btn-accent btn-link btn-sm btn-just-icon">
+                                            <i class="material-icons">
+                                                <span style="max-height: 50px; max-width: 10px;">
+                                                    <img style="max-height: 50px; max-width: 30px;" src="assets/images/Cattura.png" >
+                                                </span>
+                                            </i>
+                                          </button>
+                                        </td>
+                                        </ng-container>
+
+                                        <!-- Name Column -->
+
+                                      <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+                                      <tr mat-row [ngClass]="{'make-gold': i%2==0 }" (click)="selection.toggle(row)" *matRowDef="let row; columns: displayedColumns1; let i = index" ></tr>
+
+                                  </table>
+                                  <mat-paginator [pageSizeOptions]="[5, 10, 15]" #paginatorcontratmodal showFirstLastButtons ></mat-paginator>
+
+                              </div>
+                                <div class="col-md-2">
+                                    <button  [disabled]="flag_readoly" [disabled]="flag_create || disableDeleteDocBtn()" (click) = "eliminadoc()" class="btn btn-primary btn-lg btn-block" [ngStyle]="{'cursor': (disableDeleteDocBtn()? 'not-allowed':'pointer')}" style="background-color: #ecb38e;"> Elimina Doc </button>
+                                    <button  [disabled]="flag_readoly" [disabled]="flag_create" [ngStyle]="{'cursor': (flag_create || flag_readoly? 'not-allowed':'pointer')}" class="btn btn-primary btn-lg btn-block" style="background-color: #ecb38e;" (click) = "sendmail(editEmailModal1)" > Invia mail </button>
+                                </div>
+
+                          </div>
+                      </div>
+
+                  </div>
+              </div>
+            </form>
+          </div>
+      </div>
+  </div>
+</div>
