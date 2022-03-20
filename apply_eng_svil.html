@@ -1,0 +1,642 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="/wp-content/themes/betse/assets/css/jquery-filestyle.min.css">
+<link rel="stylesheet" type="text/css" href="/wp-content/themes/betse/assets/css/styleCaptcha.css">
+<script type="text/javascript" src="/wp-content/themes/betse/assets/js/jquery.ebcaptcha.js"></script>
+<script src='https://www.google.com/recaptcha/api.js' async defer ></script>
+
+<script src="/wp-content/themes/betse/assets/js/jquery-filestyle.min.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script><script>// <![CDATA[
+<?php $pp0=$_GET['p0'];$pp1=$_GET['p1'];$pp2=$_GET['p2'];$pp3=$_GET['p3'];$pp4=$_GET['p4'];$pp5=$_GET['msgOk'];$ppMSG=$_GET['pMessaggio']; 
+
+// LETTURA DAL DB---
+$servername = "localhost";$username = "betse_own";$password = "ownbetse";$dbname = "betse";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+
+
+$sql = "SELECT * FROM betse_custom_apply WHERE id=$ppMSG";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) 
+{
+    // output data of each row
+    while($row = $result->fetch_assoc()) 
+	{
+        $descrizione=$row["descrizione"];
+		$etichetta=$row["etichetta"];
+    }
+}
+
+$conn->close();
+// FINE LETTURA ---
+
+
+?>
+// ]]></script>
+<script type="text/javascript">// <![CDATA[
+
+var testLocation;
+
+var upFileSize = 0;
+var upFileSize2 = 0;
+
+$(function() { 
+
+$("#dbirth").focus(function(){
+	$("#dbirth").val("");
+});
+$("#dbirth").blur(function(){
+	if($("#dbirth").val().length==0)
+	{
+		$("#dbirth").val("dd/mm/yyyy");
+	}
+});
+
+$('#upFile').bind('change', function() {
+ upFileSize = this.files[0].size;
+});
+$('#upFile2').bind('change', function() {
+ upFileSize2 = this.files[0].size;
+});
+
+$("#messaggio").html("<?php echo $descrizione ?>");
+
+$("#snd").prop("disabled", true);
+$("#snd").css("color","gray");
+$("#opc").css("color","gray");
+
+
+$("#param0").val("<?php echo $pp0 ?>");
+$("#param1").val("<?php echo $pp1 ?>");
+$("#param2").val("<?php echo $pp2 ?>");
+$("#param3").val("<?php echo $pp3 ?>");
+$("#param4").val("<?php echo $pp4 ?>");
+var mailOk="<?php echo $pp5; ?>";
+var sottotitolo="<?php echo $pp0; ?>";
+testLocation=sottotitolo;
+
+if (sottotitolo=='1')
+{
+	$("#tt").html("<?php echo $etichetta; ?>");
+	$('#positionRow').remove();
+	$('#chkCity1').remove();
+	$('#chkCity2').remove();
+}
+if (sottotitolo=='2')
+{
+	$("#tt").html("GRADUATE");
+	$('#positionRow').remove();
+    $('#messaggio').remove();
+	$('#chkCity1').remove();
+	$('#chkCity2').remove();
+}
+if (sottotitolo=='3')
+{
+	$('#messaggio').remove();
+	$('#msgYourCountry').remove();
+	
+	
+	
+	$("#opc1").html("Country");
+	$("#lblOpcity1").html("Location");
+
+
+	var citta=$("#param3").val().split(";");
+   
+
+	
+	if(!citta[1])
+	{
+	
+		$('#secondChoice').remove();
+		$('#chkCity1').remove();
+		
+	}else{
+  
+     	$("#opc2").html("");
+      	$("#opCountry2").remove();
+		$("#opCity1").css("color", "gray");
+		$("#opCity2").css("color", "gray");;
+		
+
+	}
+
+	
+
+	$("#tt").html("OPPORTUNITIES");
+	
+	// POPOLIAMO LA LIST COUNTRY E CITY SOLO CON PAESE E CITTA PASSATI
+	$("#opCountry1").empty();
+	$("#opCountry1").append($('<option></option>').val($("#param2").val()).html($("#param2").val()));
+	
+
+	
+  
+
+	$("#opCity1").empty();
+	$("#opCity1").append($('<option></option>').val(citta[0]).html(citta[0]));
+
+
+
+	//$("#opCountry2").empty();
+	//$("#opCountry2").append($('<option></option>').val($("#param2").val()).html($("#param2").val()));
+	
+	$("#opCity2").empty();
+	$("#opCity2").append($('<option></option>').val(citta[1]).html(citta[1]));
+
+	
+	$("#opPos").val($("#param1").val());
+    
+	if($("#param4").val()=='IT')
+	{
+		$("#carrers").val("IT Consulting");
+	}else{
+		$("#carrers").val("Business Consulting");	
+	}
+	
+	// DISABILITAMO TUTTI I CAMPI CHE NON DEVONO ESSERE MODIFICATI
+	$("#opPos").prop( "disabled", true );
+	$("#opCity1").prop( "disabled", true );
+   	$("#opCity2").prop( "disabled", true );
+	$("#opCountry1").prop( "disabled", true );
+	$("#opCountry2").prop( "disabled", true );
+	$("#carrers").prop( "disabled", true );
+
+	
+
+
+}
+
+
+if(mailOk=="true")
+{
+	$("#msg").val("THANK YOU Your application has been successful");$("#msg").show();$("#msg").css("color","red");
+	$("#msg").css("color","green");
+	$("#msg").show();
+}
+else
+{
+	if(mailOk == "false")
+	{
+	$("#msg").val("Please, validate the captcha!");$("#msg").show();$("#msg").css("color","red");
+	$("#msg").css("color","red");
+	$("#msg").show();
+	}
+}
+
+
+});
+
+
+function testAuth()
+{
+	
+	if ($("#auth").prop('checked')) {
+       $("#snd").prop("disabled", false);
+	   $("#snd").css("color","black");
+
+		
+    } else {
+       $("#snd").prop("disabled", true);
+	   $("#snd").css("color","gray");
+
+		
+    }
+}
+
+
+function choiceCity()
+{
+	
+	if ($("#chkCity1").prop('checked')) {
+	   $("#opCity1").css("color","black");
+    } else {
+	  $("#opCity1").css("color","gray");
+    }
+	if ($("#chkCity2").prop('checked')) {
+	   $("#opCity2").css("color","black");
+    } else {
+	  $("#opCity2").css("color","gray");
+    }
+
+
+}
+
+function testField()
+{
+	
+
+	
+
+
+	$("#msg").hide();
+	if($.trim($("#fname").val()).length==0)
+	{
+		$("#msg").val("Warning: First Name Required!");$("#msg").show();$("#msg").css("color","red");
+		return false;
+	}
+	if($.trim($("#lname").val()).length==0)
+	{
+		$("#msg").val("Warning: Last Name Required!");$("#msg").show();$("#msg").css("color","red");
+		return false;
+	}
+	
+	if($("#dbirth").val().length==0 || $("#dbirth").val()=="gg/mm/aaaa")
+	{
+		$("#msg").val("Warning: Date of Birth Required!");$("#msg").show();$("#msg").css("color","red");
+		return false;
+	}
+	else{
+
+		var reg = /(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d/;
+		var dt=$("#dbirth").val();
+		if (!dt.match(reg))
+		{
+			$("#msg").val("Warning: Date of Birth in the wrong format!");$("#msg").show();$("#msg").css("color","red");
+		return false;
+		}
+
+	}
+	if($("#mnumber").val().length==0)
+	{
+		$("#msg").val("Warning: Mobile Number Required!");$("#msg").show();$("#msg").css("color","red");
+		return false;
+	}
+	if(!$.isNumeric($("#mnumber").val()))
+	{
+		$("#msg").val("Warning: Mobile Number Accept Only Numbers!");$("#msg").show();$("#msg").css("color","red");
+		return false;
+
+	}
+	if($("#email").val().length==0)
+	{
+		$("#msg").val("Warning: Email Required!");$("#msg").show();$("#msg").css("color","red");
+		return false;
+	}
+  
+	if($("#upFile").val().length==0)
+	{
+		$("#msg").val("Warning: CV Required!");$("#msg").show();$("#msg").css("color","red");
+		return false;
+	} else {
+      var filename = $("#upFile").val();
+      var parts = filename.split('.');
+      var extension = parts[parts.length - 1];
+       
+      var fileSizeMB = Math.round(upFileSize / 1024 / 1024 );                       
+
+      if(fileSizeMB > 10){
+           $("#msg").val("Warning: File sizes must be less than 10 MB");$("#msg").show();$("#msg").css("color","red");
+           return false;
+      }                                                                     
+      
+      var extOk = false;
+      if((extension.toLowerCase()=="pdf") || (extension.toLowerCase()=="doc") || (extension.toLowerCase()=="docx") || (extension.toLowerCase()=="odt")){
+        extOk = true;
+      }
+      if(extOk == false){
+           $("#msg").val("Warning: Files must be of type .pdf, .doc, .docx or .odt");$("#msg").show();$("#msg").css("color","red");
+           return false;
+      }     
+  }
+  
+  if($("#upFile2").val().length>0){
+      var filename = $("#upFile2").val();
+      var parts = filename.split('.');
+      var extension = parts[parts.length - 1]; 
+      
+      var fileSizeMB = Math.round(upFileSize2 / 1024 / 1024 );                       
+
+      if(fileSizeMB > 10){
+           $("#msg").val("Warning: File sizes must be less than 10 MB");$("#msg").show();$("#msg").css("color","red");
+           return false;
+      }       
+      
+      var extOk = false;
+      if((extension.toLowerCase()=="pdf") || (extension.toLowerCase()=="doc") || (extension.toLowerCase()=="docx") || (extension.toLowerCase()=="odt")){
+        extOk = true;
+      }
+      if(extOk == false){
+           $("#msg").val("Warning: Files must be of type .pdf, .doc, .docx or .odt");$("#msg").show();$("#msg").css("color","red");
+           return false;
+      }   
+  }   
+  
+	if($("#opCity1 :selected").text().length==0)
+	{
+			
+$("#msg").val("Warning:Country and City Required!");$("#msg").show();$("#msg").css("color","red");
+	return false;
+	}
+	else
+	{
+	    var filter = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+	if (!filter.test($("#email").val())) {
+			$("#msg").val("Warning: Email format not valid!");$("#msg").show();$("#msg").css("color","red");
+			return false;
+	    }  	
+	}
+	
+	if($("#dbirth").val().length!=0)
+	{
+		var oggi=new Date();
+		var annoCorrente=oggi.getFullYear();
+		var dataNascita=$("#dbirth").val();
+		var annoN=dataNascita.split('/')[2];
+		
+		if(annoCorrente-annoN <18) { $("#msg").val("Warning: The age of the candidate can not be less than 18 years");$("#msg").show();$("#msg").css("color","red"); return false; } } ;
+
+
+	//TESTIAMO CHE NELLE OPEN POSITIONS ALMENO SIA SELEZ. UNA CITTA'
+
+	if (typeof $("#chkCity1").prop('checked')!='undefined') 
+	{
+      if (!$("#chkCity1").prop('checked')) 
+      {
+          if (!$("#chkCity2").prop('checked')) 
+          {
+    
+              $("#msg").val("Warning:Location or Location Second Choice Required!");
+              $("#msg").show();
+              $("#msg").css("color","red");
+        
+              return false;
+          }
+  
+      }
+
+}
+
+//  disabilitato il 04-03/2020 su richiesta Vendittelli
+
+if (!$("#auth").prop('checked')) {
+
+	$("#msg").val("Warning! Check Privacy Policy to continue");
+              $("#msg").show();
+              $("#msg").css("color","red");
+        
+              return false;
+}
+
+
+
+copiaCampiDisabled();
+
+
+/*
+$("#msg").val("THANK YOU Your application has been successful");$("#msg").show();$("#msg").css("color","red");
+	$("#msg").css("color","green");
+	$("#msg").show();
+	
+	*/
+
+
+
+
+// SE TUTTO OK...
+return true;
+
+
+
+
+
+}
+
+function loadCity(country,city)
+{
+  
+	var valuesContryCity={
+	'Italy' :["Rome","Milan","Turin","Verona","Spoleto"],
+	'Germany':["Munich","Frankfurt"],
+	'UK':["London"],
+	'Austria':["Vienna"],
+	'Romania':["Bucharest","Iasi"],
+	'Ukraine':["Kyiv"],
+	'Poland':["Poznan","Warsaw"],
+	'Switzerland':["Pfäffikon","Zurigo"],
+	
+	}
+
+	  var pros = valuesContryCity[$(country).val()];
+  	  $(city).empty();
+      $.each(pros, function(val, text) {
+    	$(city).append(
+        $('<option></option>').val(text).html(text)
+      );
+         
+	});
+}
+
+function copiaCampiDisabled()
+{
+
+	//COPIO I VALORI DELLE SELECT DIDABILITATE IN CAMPI NASCOSTI
+	
+	
+	$("#disableCarrers").val($("#carrers").val());
+	
+	
+	$("#disableOpenPosition").val($("#tt").html());
+	
+
+    if(typeof $("#chkCity1").prop('checked')!='undefined')
+    {
+        if ($("#chkCity1").prop('checked')) 
+        {
+            $("#disableCity1").val($("#opCity1").val());
+			$("#disableCountry1").val($("#opCountry1").val());	
+        }
+        if ($("#chkCity2").prop('checked')) 
+        {
+            $("#disableCity2").val($("#opCity2").val());
+			$("#disableCountry2").val($("#opCountry1").val());
+        }
+					
+        
+    }else{
+	
+    	    
+        $("#disableCity1").val($("#opCity1").val());
+        $("#disableCity2").val($("#opCity2").val());
+		$("#disableCountry1").val($("#opCountry1").val());		
+		$("#disableCountry2").val($("#opCountry2").val());
+    }
+
+
+
+}
+
+
+
+
+// ]]></script>
+<style>
+  .privacy{
+  	font-weight:normal;
+  	font-size:10px; 
+  	font-style:italic;
+  	width:100%;
+  	height:100px;
+  	text-align:left;
+  	overflow: auto;
+  }
+   .privacy p{margin:0;padding-bottom: 2px}
+</style>  
+<div id="messaggio" class="" style="width:800px;text-align:justify;font-weight:normal;"></div>
+
+<form id="form" action="/wp-content/themes/betse/customer-details.php" enctype="multipart/form-data" method="POST" name="customer_details">
+<table class="TFtable  TabApply" style="width: 80%;font-size:14px;">
+<tbody>
+<tr>
+<th colspan="5">
+  <span id="tt" style="font-weight:bold; font-size: 14px;padding:2px;"></span>
+ </th>
+</tr>
+<tr>
+<td width="165px">First Name *</td>
+<td width="180px"><input id="fname" name="fname" type="text" value="" /></td>
+<td width="160px">Last Name *</td>
+<td width="175px"><input id="lname" name="lname" type="text" /></td>
+</tr>
+<tr>
+<td width="0">Date of Birth *</td>
+<td width="0"><input id="dbirth" name="dbirth" type="text" value="dd/mm/yyyy" /></td>
+<td width="0">Gender *</td>
+<td width="0"><select id="sex" style="font-weight: normal;" name="sex">
+<option value="Male">Male</option>
+<option value="Female">Female</option>
+</select></td>
+</tr>
+<tr>
+<td width="0">Address</td>
+<td width="0"><input id="address" name="address" type="text" /></td>
+<td width="0">Street Number</td>
+<td width="0"><input id="n" name="n" type="text" /></td>
+</tr>
+<tr>
+<td width="0">Postal Code</td>
+<td width="0"><input id="pcode" name="pcode" type="text" /></td>
+<td width="0"></td>
+<td width="0"></td>
+</tr>
+<tr>
+<td width="0">City</td>
+<td width="0"><input id="city" name="city" type="text" /></td>
+<td width="0">Country</td>
+<td width="0"><input id="country" name="country" type="text" /></td>  
+</tr>
+<tr>
+<td width="0">Mobile Number *</td>
+<td width="0"><input id="mnumber" name="mnumber" type="text" /></td>
+<td width="0">E mail *</td>
+<td width="0"><input id="email" name="email" type="text" /></td>
+</tr>
+<tr>
+<td width="0">Upload Your CV *</td>
+<td width="0"><input style="padding: 1px;" id="upFile" name="upFile" type="file" class="jfilestyle" data-buttonText="Choose File" data-inputSize="110px" data-buttonBefore="true" /></td>
+<td width="0">Cover Letter</td>
+<td width="0"><input style="padding: 1px;" id="upFile2" name="upFile2" type="file"  class="jfilestyle" data-buttonText="Choose File" data-inputSize="110px" data-buttonBefore="true" /></td>
+</tr>
+<tr id="msgYourCountry" style="font-style:Italic;font-size:15px;">
+  <td colspan="2" style="font-weight: normal">
+    Select your country of interest
+  </td>
+  <td colspan="2" style="font-weight: normal;">
+     Select your location of interest
+  </td>    
+</tr>  
+<tr>
+<td><span id="opc1">Country First Choice</span></td>
+<td><select id="opCountry1" style="font-weight: normal;" name="opCountry1" onchange="loadCity(this,'#opCity1');">
+<option value=""></option>
+<option value="Italy">Italy</option>
+<option value="Germany">Germany</option>
+<option value="Switzerland">Switzerland</option>
+<option value="Austria">Austria</option>
+<option value="Romania">Romania</option>
+<option value="UK">UK</option>
+<option value="Poland">Poland</option>
+</select></td>
+<td><span id="lblOpcity1">Location First Choice</span></td>
+<td>
+<select id="opCity1" style="font-weight: normal;" name="opCity1"></select><input id="chkCity1" name="chkCity1" style="width:14px;height:14px;float:right;" type="checkbox" value="" onChange="choiceCity()" /> 
+</td>
+</tr>
+<tr id="secondChoice">
+<td><span id="opc2">Country Second Choice</span></td>
+<td><select id="opCountry2" style="font-weight: normal;" name="opCountry2" onchange="loadCity(this,'#opCity2');">
+<option value=""></option>
+<option value="Italy">Italy</option>
+<option value="Germany">Germany</option>
+<option value="Switzerland">Switzerland</option>
+<option value="Austria">Austria</option>
+<option value="Romania">Romania</option>
+<option value="UK">UK</option>
+<option value="Poland">Poland</option>
+</select></td>
+<td><span id="lblOpcity2">Location Second Choice</span></td>
+<td>
+<select id="opCity2" style="font-weight: normal;" name="opCity2"></select><input id="chkCity2" name="chkCity2" style="width:14px;height:14px;float:right;" type="checkbox" value="" onChange="choiceCity()" />  
+</td>
+</tr>  
+<td><span id="lblCarrers">Type of Application</span></td>
+<td><select id="carrers" style="font-weight: normal;" name="carrers">
+<option value="IT Consulting">IT Consulting</option>
+<option value="Business Consulting">Business Consulting</option>
+</select></td>
+<td></td>
+<td></td>
+</tr>
+<tr id="positionRow">
+<td width="0">Open Position</td>
+<td width="0" colspan="3"><input id="opPos" name="opPos" type="text" style="width:285px" /></td>
+
+</tr>
+<tr>
+<td width="0">Privacy Policy</td>
+<td colspan="3">
+<div id="privacy_eng" class="privacy">  
+<p>“ All the personal data required are going to be processed, according to the Be Group's present and future purposes and objectives of recruitment and selection of staff, by Be Shaping the Future SpA and by the others Societies of the Group:</p>
+<p> Be Shaping the Future S.p.A., Be Shaping the Future Management Consulting S.p. A., Be Shaping the Future Corporate Services S.p.A.,  Be Shaping the Future DigiTech Solutions  S.p.A., Be Poland Think, Solve & Execute Sp. z o. o., iBe Think Solve, Execute Ltd., targit GmbH, Be Think, Solve, Execute RO s.r.l.,  Be Ukraine Think, Solve, Execute LLC., IQUII Srl, Tesla Consulting Srl, Be Your Essence S.r.L, and every other part of Be Group.</p>
+<p> In order to provide all the informations about the methods of processing personal data you can consult <a href="/wp-content/uploads/2020/07/Be_InformativaLavoraConNoi_ENG.pdf" target="_blank" rel="noopener noreferrer"> "https://www.be-tse.it/en" </a> Throught this application you declare to have read the Privacy notice of Be Group and agree with all its the methods of processing personal data”. </p>
+
+</div>  
+</td>
+</tr>
+</tbody>
+</table>
+
+
+<p class="" style="float: left; margin-right: 4px;font-size:14px;">I authorise the use of my personal data according to legislative decree n°196/03</p>
+<input id="auth" name="auth" type="checkbox" value="" onChange="testAuth();" />
+
+<div class="g-recaptcha" data-sitekey="6Ld1hJMeAAAAAHHgxDkQC1T_ekGR3CV9XNzg6wrp"></div>
+
+<div class="sendBtn" style="font-size:14px;">  
+ <input id="snd" type="submit" value="Send" onClick="return testField();" style="width:100px;margin-left:225%;"/>
+</div>
+.
+  
+
+<div class=""><input id="msg" style="border: none; display: none; width: 500px;padding:15px;" name="msg" readonly="readonly" type="text" value="" /></div>
+   
+  
+<input id="param0" name="param0" type="hidden" value="" />
+<input id="param1" name="param1" type="hidden" value="" />
+<input id="param2" name="param2" type="hidden" value="" />
+<input id="param3" name="param3" type="hidden" value="" />
+<input id="param4" name="param4" type="hidden" value="" />
+<input id="disableCountry1" name="disableCountry1" type="hidden" value="" />  
+<input id="disableCity1" name="disableCity1" type="hidden" value="" />  
+<input id="disableCountry2" name="disableCountry2" type="hidden" value="" />    
+<input id="disableCity2" name="disableCity2" type="hidden" value="" />  
+<input id="disableCarrers" name="disableCarrers" type="hidden" value="" />  
+<input id="disableOpenPosition" name="disableOpenPosition" type="hidden" value="" />  
+ 
+
+
+  
+</form>
