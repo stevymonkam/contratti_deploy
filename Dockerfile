@@ -9,4 +9,4 @@ COPY . .
 RUN ng build
 
 FROM nginx as runtime
-COPY --from=build /app/dist/contratti_deploy /usr/share/nginx/html
+COPY --from=build /app/dist/test1 /usr/share/nginx/html
