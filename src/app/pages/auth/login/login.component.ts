@@ -146,7 +146,7 @@ export class LoginComponent implements OnInit {
    }*/
 
   async login() {
-
+   this.router.navigate(['home']);
     /* if (!this.fa.valid) {
       console.log("invalid form summitted");
       return null;
