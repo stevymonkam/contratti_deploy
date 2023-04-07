@@ -7,7 +7,7 @@ export class ConfigService {
 
   API_URL: string
   constructor() {
-    this.API_URL='http://192.168.56.5:8080/api';
+    this.API_URL='http://172.19.0.4:8080/api';
     //this.API_URL='https://cors-anywhere.herokuapp.com/http://api.contratti.immobiliz.com/api'; //http://127.0.0.1:8000
   }
 
