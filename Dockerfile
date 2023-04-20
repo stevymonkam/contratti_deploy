@@ -5,6 +5,7 @@ RUN npm install -g @angular/cli
 
 COPY ./package.json .
 COPY . .
+ENV API_URL=$API_URL
 RUN npm install
 
 RUN ng build
