@@ -29,6 +29,7 @@
     "@types/jquery": "^3.5.5",
     "angular2-jwt": "^0.2.3",
     "bootstrap": "^4.6.0",
+    "dotenv": "^16.0.3",
     "file-saver": "^2.0.5",
     "font-awesome": "^4.7.0",
     "glyphicons": "^0.2.0",
