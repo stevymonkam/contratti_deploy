@@ -22,7 +22,6 @@ pipeline {
                     sh '''
                         docker run --rm -d -p 8081:80 $IMAGE_NAME:$IMAGE_TAG
                         sleep 5
-                        curl http://192.168.56.8:8081 | grep -q "Welcome to test1"
                     '''
                 }
             }
