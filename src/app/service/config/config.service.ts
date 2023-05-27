@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as dotenv from 'dotenv';
+dotenv.config();
 
 @Injectable({
   providedIn: 'root'
